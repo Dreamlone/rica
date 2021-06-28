@@ -1,6 +1,6 @@
 # rica
 
-<img src="../media/rica.png" width="500"/>
+![rica.png](https://raw.githubusercontent.com/Dreamlone/rica/main/media/rica.png)
 
 River cross-section approximator (RICA)
 
