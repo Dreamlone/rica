@@ -16,7 +16,7 @@ def plot_section(dataframe: pd.DataFrame, river_level: int = None):
         plt.grid()
         plt.show()
     else:
-        x_range = find_x_borders(dataframe, river_level)
+        x_range, _ = find_x_borders(dataframe, river_level)
         plt.plot(dataframe['x'], dataframe['Height_m'], c='blue',
                  label='Cross section')
         plt.plot(x_range, np.full(len(x_range), river_level), c='orange',
@@ -38,6 +38,7 @@ def find_x_borders(dataframe, river_level):
     """ Calculate x range for river level line visualisation """
     if max(dataframe['Height_m']) <= river_level:
         x_range = [min(dataframe['x']), max(dataframe['x'])]
+        indices = None
     else:
         heights = np.ravel(np.array(dataframe['Height_m']))
         xs = np.ravel(np.array(dataframe['x']))
@@ -46,17 +47,21 @@ def find_x_borders(dataframe, river_level):
         ids_flooded = np.ravel(np.argwhere(heights <= river_level))
         ids_flooded_intervals = _parse_interval_ids(ids_flooded)
         if len(ids_flooded_intervals) == 1:
-            x_range = xs[ids_flooded_intervals[0]]
+            indices = ids_flooded_intervals[0]
+            x_range = xs[indices]
         elif len(ids_flooded_intervals) > 1:
             # Find the longest interval
             lens = [len(i) for i in ids_flooded_intervals]
             lens = np.array(lens)
             max_len_id = int(np.argmax(lens))
-            x_range = xs[ids_flooded_intervals[max_len_id]]
+
+            # Get ids of "flooded" part
+            indices = ids_flooded_intervals[max_len_id]
+            x_range = xs[indices]
         else:
             raise ValueError(f'River level is not valid')
 
-    return x_range
+    return x_range, indices
 
 
 def _parse_interval_ids(ids_flooded: np.array) -> list:

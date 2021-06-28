@@ -43,7 +43,7 @@ def calculate_flood_points(dataframe, river_level, x_coords, h_coords):
         if current_level < river_level:
             current_x = x_coords[point]
             # Find appropriate x coords
-            x_range = find_x_borders(dataframe, current_level)
+            x_range, _ = find_x_borders(dataframe, current_level)
             if current_x > x_range[0] and current_x < x_range[-1]:
                 flood_count += 1
 
