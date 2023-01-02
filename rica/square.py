@@ -3,10 +3,20 @@ import pandas as pd
 from rica.vis_tools import plot_points, find_x_borders
 
 
-def water_in_section(dataframe: pd.DataFrame, river_level: int, points: int = 5000,
+def water_in_section(dataframe: pd.DataFrame,
+                     river_level: int,
+                     points: int = 5000,
                      vis: bool = False):
-    """ Calculate water amount in cross section by level using Monte-Carlo
-    method
+    """
+    Calculate water amount in cross section by level using Monte-Carlo method.
+    Key idea: generate bbox - rectangle which contains cross section, then
+    generate randomly distributed points. The square is the ratio of points in
+    cross section to all points in rectangle
+
+    :param dataframe: table with coordinates and elevation
+    :param river_level: level of the water
+    :param points: number of points to generate
+    :param vis: is there a need to prepare visualization
     """
     left_border_x = min(dataframe['x'])
     right_border_x = max(dataframe['x'])
@@ -26,7 +36,7 @@ def water_in_section(dataframe: pd.DataFrame, river_level: int, points: int = 50
     flood_points = calculate_flood_points(dataframe=dataframe, river_level=river_level,
                                           x_coords=x_coords, h_coords=h_coords)
 
-    flood_ratio = flood_points/points
+    flood_ratio = flood_points / points
 
     section_square = flood_ratio * known_sq
     return section_square

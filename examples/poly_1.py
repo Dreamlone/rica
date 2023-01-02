@@ -27,7 +27,7 @@ def imitate_problem(dataframe, river_level):
     # Calculate new square
     dataframe['Height_m'] = recovered
     square_water = water_in_section(dataframe, river_level, vis=False)
-    square_ga = square_water/10000
+    square_ga = square_water / 10000
     print(f'Estimated water amount in the cross section (hectares): {square_ga:.2f}')
 
 
@@ -37,7 +37,7 @@ if __name__ == '__main__':
 
     # Calculate water amount in the section
     square_water = water_in_section(df, river_level, vis=False)
-    square_ga = square_water/10000
+    square_ga = square_water / 10000
     print(f'Actual water amount in the cross section (hectares): {square_ga:.2f}')
 
     imitate_problem(df, river_level)
